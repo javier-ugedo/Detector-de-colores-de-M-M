@@ -23,8 +23,6 @@ int main(void){
     inicializarADC(0); //EMPIEZA MIDIENDO AN0
     inicializarTimer1(1000); 
 
-    unsigned int pulsador=1,pulsador_ant=1;
-    unsigned int contador=0;
     unsigned int portb=0;
     unsigned int i=0;
     while(1){
@@ -59,24 +57,25 @@ int main(void){
             PORTB = portb;
         }
             else {
-
+                
+             medida = 0;
                 AD1CON1 &= ~(1 << 1); //dejar de medir
                 PORTB |= (0x0E00); //NO MIDE NINGÚN COLOR
-                if(medida_rojo < medida_verde && medida_rojo < medida_azul){
+                if(medida_rojo >= medida_verde && medida_rojo >= medida_azul){
                     //ES ROJO
-                    PORTB &= ~(1 << 13);
-                    PORTB |= (1 << 14);
-                    PORTB |= (1 << 15);
-                } else if(medida_verde < medida_rojo && medida_verde < medida_azul){
-                    //ES VERDE
                     PORTB |= (1 << 13);
                     PORTB &= ~(1 << 14);
-                    PORTB |= (1 << 15);
-                } else if(medida_azul < medida_rojo && medida_azul < medida_verde){
-                    //ES AZUL
-                    PORTB |= (1 << 13);
+                    PORTB &= ~(1 << 15);
+                } else if(medida_verde >= medida_rojo && medida_verde >= medida_azul){
+                    //ES VERDE
+                    PORTB &= ~(1 << 13);
                     PORTB |= (1 << 14);
                     PORTB &= ~(1 << 15);
+                } else if(medida_azul >= medida_rojo && medida_azul >= medida_verde){
+                    //ES AZUL
+                    PORTB &= ~(1 << 13);
+                    PORTB &= ~(1 << 14);
+                    PORTB |= (1 << 15);
                 }
                 //ESTADO_NEXT
         
@@ -96,7 +95,7 @@ void inicializarPuertos(void){
     TRISA |= 0x1; //entrada DEL ADC PARA MEDIR COLOR
 
     TRISB &= ~(0xF000);
-    PORTB |= (0xF000);
+    PORTB &= ~(0xF000);
     
     //InicializarPuertos
 }
