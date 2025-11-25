@@ -39,5 +39,4 @@ void inicializarADC(unsigned int pinAN){
     IPC3bits.AD1IP = 4; //Prioridad 3
     AD1CON1 = 0x80E0; //ADC ON, conversion automatica
     AD1CHS0 = pinAN;
-    AD1CON1 |= 1 << 1;
 }
