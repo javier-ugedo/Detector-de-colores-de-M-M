@@ -5,3 +5,4 @@ void inicializarTimer1(unsigned int dms);
 
 void inicializarADC(unsigned int pinAN);
 #endif
+
